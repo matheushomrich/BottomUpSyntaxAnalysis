@@ -1,0 +1,1676 @@
+   0  $accept : Goal $end
+
+   1  Goal : MainClass ListClassDeclaration
+
+   2  ListClassDeclaration : ListClassDeclaration ClassDeclaration
+   3                       |
+
+   4  MainClass : CLASS IDENTIFIER '{' PUBLIC STATIC VOID MAIN '(' STRING '[' ']' IDENTIFIER ')' '{' Statement '}' '}'
+
+   5  ClassDeclaration : CLASS IDENTIFIER ExtendsOpt '{' ListVarDeclaration ListMethodDeclaration '}'
+
+   6  ExtendsOpt : EXTENDS IDENTIFIER
+   7             |
+
+   8  ListVarDeclaration : ListVarDeclaration VarDeclaration
+   9                     |
+
+  10  ListMethodDeclaration : ListMethodDeclaration MethodDeclaration
+  11                        |
+
+  12  VarDeclaration : Type IDENTIFIER ';'
+  13                 |
+
+  14  MethodDeclaration : PUBLIC Type IDENTIFIER '(' ParamList ')' '{' VarDeclaration Statement RETURN Expression ';' '}'
+
+  15  ParamList : Type IDENTIFIER ParamListRecurr
+  16            |
+
+  17  ParamListRecurr : ',' Type IDENTIFIER ParamListRecurr
+  18                  |
+
+  19  Type : INT TypeArr
+  20       | BOOLEAN TypeArr
+  21       | IDENTIFIER TypeArr
+
+  22  TypeArr : '[' ']'
+  23          |
+
+  24  Statement : '{' Statement '}'
+  25            | IF '(' Expression ')' Statement ELSE Statement
+  26            | WHILE '(' Expression ')' Statement
+  27            | SYSTEM_OUT_PRINTLN '(' Expression ')' ';'
+  28            | IDENTIFIER '=' Expression ';'
+  29            | IDENTIFIER '[' Expression ']' '=' Expression ';'
+  30            |
+
+  31  Expression : Expression "&&" Expression
+  32             | Expression '<' Expression
+  33             | Expression '+' Expression
+  34             | Expression '-' Expression
+  35             | Expression '*' Expression
+  36             | Expression '/' Expression
+  37             | INT
+  38             | TRUE
+  39             | FALSE
+  40             | IDENTIFIER
+  41             | THIS
+  42             | NEW INT '[' Expression ']'
+  43             | NEW IDENTIFIER '(' ')'
+  44             | '!' Expression
+  45             | '(' Expression ')'
+  46             | Expression '[' Expression ']'
+  47             | Expression '.' "length"
+  48             | Expression '.' IDENTIFIER '(' ArgList ')'
+
+  49  ArgList : Expression ArgListRecurr
+  50          |
+
+  51  ArgListRecurr : ',' Expression ArgListRecurr
+  52                |
+
+state 0
+	$accept : . Goal $end  (0)
+
+	CLASS  shift 1
+	.  error
+
+	Goal  goto 2
+	MainClass  goto 3
+
+
+state 1
+	MainClass : CLASS . IDENTIFIER '{' PUBLIC STATIC VOID MAIN '(' STRING '[' ']' IDENTIFIER ')' '{' Statement '}' '}'  (4)
+
+	IDENTIFIER  shift 4
+	.  error
+
+
+state 2
+	$accept : Goal . $end  (0)
+
+	$end  accept
+
+
+state 3
+	Goal : MainClass . ListClassDeclaration  (1)
+	ListClassDeclaration : .  (3)
+
+	.  reduce 3
+
+	ListClassDeclaration  goto 5
+
+
+state 4
+	MainClass : CLASS IDENTIFIER . '{' PUBLIC STATIC VOID MAIN '(' STRING '[' ']' IDENTIFIER ')' '{' Statement '}' '}'  (4)
+
+	'{'  shift 6
+	.  error
+
+
+state 5
+	Goal : MainClass ListClassDeclaration .  (1)
+	ListClassDeclaration : ListClassDeclaration . ClassDeclaration  (2)
+
+	CLASS  shift 7
+	$end  reduce 1
+
+	ClassDeclaration  goto 8
+
+
+state 6
+	MainClass : CLASS IDENTIFIER '{' . PUBLIC STATIC VOID MAIN '(' STRING '[' ']' IDENTIFIER ')' '{' Statement '}' '}'  (4)
+
+	PUBLIC  shift 9
+	.  error
+
+
+state 7
+	ClassDeclaration : CLASS . IDENTIFIER ExtendsOpt '{' ListVarDeclaration ListMethodDeclaration '}'  (5)
+
+	IDENTIFIER  shift 10
+	.  error
+
+
+state 8
+	ListClassDeclaration : ListClassDeclaration ClassDeclaration .  (2)
+
+	.  reduce 2
+
+
+state 9
+	MainClass : CLASS IDENTIFIER '{' PUBLIC . STATIC VOID MAIN '(' STRING '[' ']' IDENTIFIER ')' '{' Statement '}' '}'  (4)
+
+	STATIC  shift 11
+	.  error
+
+
+state 10
+	ClassDeclaration : CLASS IDENTIFIER . ExtendsOpt '{' ListVarDeclaration ListMethodDeclaration '}'  (5)
+	ExtendsOpt : .  (7)
+
+	EXTENDS  shift 12
+	'{'  reduce 7
+
+	ExtendsOpt  goto 13
+
+
+state 11
+	MainClass : CLASS IDENTIFIER '{' PUBLIC STATIC . VOID MAIN '(' STRING '[' ']' IDENTIFIER ')' '{' Statement '}' '}'  (4)
+
+	VOID  shift 14
+	.  error
+
+
+state 12
+	ExtendsOpt : EXTENDS . IDENTIFIER  (6)
+
+	IDENTIFIER  shift 15
+	.  error
+
+
+state 13
+	ClassDeclaration : CLASS IDENTIFIER ExtendsOpt . '{' ListVarDeclaration ListMethodDeclaration '}'  (5)
+
+	'{'  shift 16
+	.  error
+
+
+state 14
+	MainClass : CLASS IDENTIFIER '{' PUBLIC STATIC VOID . MAIN '(' STRING '[' ']' IDENTIFIER ')' '{' Statement '}' '}'  (4)
+
+	MAIN  shift 17
+	.  error
+
+
+state 15
+	ExtendsOpt : EXTENDS IDENTIFIER .  (6)
+
+	.  reduce 6
+
+
+state 16
+	ClassDeclaration : CLASS IDENTIFIER ExtendsOpt '{' . ListVarDeclaration ListMethodDeclaration '}'  (5)
+	ListVarDeclaration : .  (9)
+
+	.  reduce 9
+
+	ListVarDeclaration  goto 18
+
+
+state 17
+	MainClass : CLASS IDENTIFIER '{' PUBLIC STATIC VOID MAIN . '(' STRING '[' ']' IDENTIFIER ')' '{' Statement '}' '}'  (4)
+
+	'('  shift 19
+	.  error
+
+
+18: shift/reduce conflict (shift 20, reduce 13) on IDENTIFIER
+18: shift/reduce conflict (shift 21, reduce 13) on INT
+18: reduce/reduce conflict (reduce 11, reduce 13) on PUBLIC
+18: shift/reduce conflict (shift 22, reduce 13) on BOOLEAN
+18: reduce/reduce conflict (reduce 11, reduce 13) on '}'
+state 18
+	ClassDeclaration : CLASS IDENTIFIER ExtendsOpt '{' ListVarDeclaration . ListMethodDeclaration '}'  (5)
+	ListVarDeclaration : ListVarDeclaration . VarDeclaration  (8)
+	ListMethodDeclaration : .  (11)
+	VarDeclaration : .  (13)
+
+	IDENTIFIER  shift 20
+	INT  shift 21
+	BOOLEAN  shift 22
+	PUBLIC  reduce 11
+	'}'  reduce 11
+
+	ListMethodDeclaration  goto 23
+	VarDeclaration  goto 24
+	Type  goto 25
+
+
+state 19
+	MainClass : CLASS IDENTIFIER '{' PUBLIC STATIC VOID MAIN '(' . STRING '[' ']' IDENTIFIER ')' '{' Statement '}' '}'  (4)
+
+	STRING  shift 26
+	.  error
+
+
+state 20
+	Type : IDENTIFIER . TypeArr  (21)
+	TypeArr : .  (23)
+
+	'['  shift 27
+	IDENTIFIER  reduce 23
+
+	TypeArr  goto 28
+
+
+state 21
+	Type : INT . TypeArr  (19)
+	TypeArr : .  (23)
+
+	'['  shift 27
+	IDENTIFIER  reduce 23
+
+	TypeArr  goto 29
+
+
+state 22
+	Type : BOOLEAN . TypeArr  (20)
+	TypeArr : .  (23)
+
+	'['  shift 27
+	IDENTIFIER  reduce 23
+
+	TypeArr  goto 30
+
+
+state 23
+	ClassDeclaration : CLASS IDENTIFIER ExtendsOpt '{' ListVarDeclaration ListMethodDeclaration . '}'  (5)
+	ListMethodDeclaration : ListMethodDeclaration . MethodDeclaration  (10)
+
+	PUBLIC  shift 31
+	'}'  shift 32
+	.  error
+
+	MethodDeclaration  goto 33
+
+
+state 24
+	ListVarDeclaration : ListVarDeclaration VarDeclaration .  (8)
+
+	.  reduce 8
+
+
+state 25
+	VarDeclaration : Type . IDENTIFIER ';'  (12)
+
+	IDENTIFIER  shift 34
+	.  error
+
+
+state 26
+	MainClass : CLASS IDENTIFIER '{' PUBLIC STATIC VOID MAIN '(' STRING . '[' ']' IDENTIFIER ')' '{' Statement '}' '}'  (4)
+
+	'['  shift 35
+	.  error
+
+
+state 27
+	TypeArr : '[' . ']'  (22)
+
+	']'  shift 36
+	.  error
+
+
+state 28
+	Type : IDENTIFIER TypeArr .  (21)
+
+	.  reduce 21
+
+
+state 29
+	Type : INT TypeArr .  (19)
+
+	.  reduce 19
+
+
+state 30
+	Type : BOOLEAN TypeArr .  (20)
+
+	.  reduce 20
+
+
+state 31
+	MethodDeclaration : PUBLIC . Type IDENTIFIER '(' ParamList ')' '{' VarDeclaration Statement RETURN Expression ';' '}'  (14)
+
+	IDENTIFIER  shift 20
+	INT  shift 21
+	BOOLEAN  shift 22
+	.  error
+
+	Type  goto 37
+
+
+state 32
+	ClassDeclaration : CLASS IDENTIFIER ExtendsOpt '{' ListVarDeclaration ListMethodDeclaration '}' .  (5)
+
+	.  reduce 5
+
+
+state 33
+	ListMethodDeclaration : ListMethodDeclaration MethodDeclaration .  (10)
+
+	.  reduce 10
+
+
+state 34
+	VarDeclaration : Type IDENTIFIER . ';'  (12)
+
+	';'  shift 38
+	.  error
+
+
+state 35
+	MainClass : CLASS IDENTIFIER '{' PUBLIC STATIC VOID MAIN '(' STRING '[' . ']' IDENTIFIER ')' '{' Statement '}' '}'  (4)
+
+	']'  shift 39
+	.  error
+
+
+state 36
+	TypeArr : '[' ']' .  (22)
+
+	.  reduce 22
+
+
+state 37
+	MethodDeclaration : PUBLIC Type . IDENTIFIER '(' ParamList ')' '{' VarDeclaration Statement RETURN Expression ';' '}'  (14)
+
+	IDENTIFIER  shift 40
+	.  error
+
+
+state 38
+	VarDeclaration : Type IDENTIFIER ';' .  (12)
+
+	.  reduce 12
+
+
+state 39
+	MainClass : CLASS IDENTIFIER '{' PUBLIC STATIC VOID MAIN '(' STRING '[' ']' . IDENTIFIER ')' '{' Statement '}' '}'  (4)
+
+	IDENTIFIER  shift 41
+	.  error
+
+
+state 40
+	MethodDeclaration : PUBLIC Type IDENTIFIER . '(' ParamList ')' '{' VarDeclaration Statement RETURN Expression ';' '}'  (14)
+
+	'('  shift 42
+	.  error
+
+
+state 41
+	MainClass : CLASS IDENTIFIER '{' PUBLIC STATIC VOID MAIN '(' STRING '[' ']' IDENTIFIER . ')' '{' Statement '}' '}'  (4)
+
+	')'  shift 43
+	.  error
+
+
+state 42
+	MethodDeclaration : PUBLIC Type IDENTIFIER '(' . ParamList ')' '{' VarDeclaration Statement RETURN Expression ';' '}'  (14)
+	ParamList : .  (16)
+
+	IDENTIFIER  shift 20
+	INT  shift 21
+	BOOLEAN  shift 22
+	')'  reduce 16
+
+	Type  goto 44
+	ParamList  goto 45
+
+
+state 43
+	MainClass : CLASS IDENTIFIER '{' PUBLIC STATIC VOID MAIN '(' STRING '[' ']' IDENTIFIER ')' . '{' Statement '}' '}'  (4)
+
+	'{'  shift 46
+	.  error
+
+
+state 44
+	ParamList : Type . IDENTIFIER ParamListRecurr  (15)
+
+	IDENTIFIER  shift 47
+	.  error
+
+
+state 45
+	MethodDeclaration : PUBLIC Type IDENTIFIER '(' ParamList . ')' '{' VarDeclaration Statement RETURN Expression ';' '}'  (14)
+
+	')'  shift 48
+	.  error
+
+
+state 46
+	MainClass : CLASS IDENTIFIER '{' PUBLIC STATIC VOID MAIN '(' STRING '[' ']' IDENTIFIER ')' '{' . Statement '}' '}'  (4)
+	Statement : .  (30)
+
+	IDENTIFIER  shift 49
+	IF  shift 50
+	WHILE  shift 51
+	SYSTEM_OUT_PRINTLN  shift 52
+	'{'  shift 53
+	'}'  reduce 30
+
+	Statement  goto 54
+
+
+state 47
+	ParamList : Type IDENTIFIER . ParamListRecurr  (15)
+	ParamListRecurr : .  (18)
+
+	','  shift 55
+	')'  reduce 18
+
+	ParamListRecurr  goto 56
+
+
+state 48
+	MethodDeclaration : PUBLIC Type IDENTIFIER '(' ParamList ')' . '{' VarDeclaration Statement RETURN Expression ';' '}'  (14)
+
+	'{'  shift 57
+	.  error
+
+
+state 49
+	Statement : IDENTIFIER . '=' Expression ';'  (28)
+	Statement : IDENTIFIER . '[' Expression ']' '=' Expression ';'  (29)
+
+	'['  shift 58
+	'='  shift 59
+	.  error
+
+
+state 50
+	Statement : IF . '(' Expression ')' Statement ELSE Statement  (25)
+
+	'('  shift 60
+	.  error
+
+
+state 51
+	Statement : WHILE . '(' Expression ')' Statement  (26)
+
+	'('  shift 61
+	.  error
+
+
+state 52
+	Statement : SYSTEM_OUT_PRINTLN . '(' Expression ')' ';'  (27)
+
+	'('  shift 62
+	.  error
+
+
+state 53
+	Statement : '{' . Statement '}'  (24)
+	Statement : .  (30)
+
+	IDENTIFIER  shift 49
+	IF  shift 50
+	WHILE  shift 51
+	SYSTEM_OUT_PRINTLN  shift 52
+	'{'  shift 53
+	'}'  reduce 30
+
+	Statement  goto 63
+
+
+state 54
+	MainClass : CLASS IDENTIFIER '{' PUBLIC STATIC VOID MAIN '(' STRING '[' ']' IDENTIFIER ')' '{' Statement . '}' '}'  (4)
+
+	'}'  shift 64
+	.  error
+
+
+state 55
+	ParamListRecurr : ',' . Type IDENTIFIER ParamListRecurr  (17)
+
+	IDENTIFIER  shift 20
+	INT  shift 21
+	BOOLEAN  shift 22
+	.  error
+
+	Type  goto 65
+
+
+state 56
+	ParamList : Type IDENTIFIER ParamListRecurr .  (15)
+
+	.  reduce 15
+
+
+57: shift/reduce conflict (shift 20, reduce 13) on IDENTIFIER
+state 57
+	MethodDeclaration : PUBLIC Type IDENTIFIER '(' ParamList ')' '{' . VarDeclaration Statement RETURN Expression ';' '}'  (14)
+	VarDeclaration : .  (13)
+
+	IDENTIFIER  shift 20
+	INT  shift 21
+	BOOLEAN  shift 22
+	RETURN  reduce 13
+	IF  reduce 13
+	WHILE  reduce 13
+	SYSTEM_OUT_PRINTLN  reduce 13
+	'{'  reduce 13
+
+	VarDeclaration  goto 66
+	Type  goto 25
+
+
+state 58
+	Statement : IDENTIFIER '[' . Expression ']' '=' Expression ';'  (29)
+
+	IDENTIFIER  shift 67
+	INT  shift 68
+	THIS  shift 69
+	NEW  shift 70
+	TRUE  shift 71
+	FALSE  shift 72
+	'('  shift 73
+	'!'  shift 74
+	.  error
+
+	Expression  goto 75
+
+
+state 59
+	Statement : IDENTIFIER '=' . Expression ';'  (28)
+
+	IDENTIFIER  shift 67
+	INT  shift 68
+	THIS  shift 69
+	NEW  shift 70
+	TRUE  shift 71
+	FALSE  shift 72
+	'('  shift 73
+	'!'  shift 74
+	.  error
+
+	Expression  goto 76
+
+
+state 60
+	Statement : IF '(' . Expression ')' Statement ELSE Statement  (25)
+
+	IDENTIFIER  shift 67
+	INT  shift 68
+	THIS  shift 69
+	NEW  shift 70
+	TRUE  shift 71
+	FALSE  shift 72
+	'('  shift 73
+	'!'  shift 74
+	.  error
+
+	Expression  goto 77
+
+
+state 61
+	Statement : WHILE '(' . Expression ')' Statement  (26)
+
+	IDENTIFIER  shift 67
+	INT  shift 68
+	THIS  shift 69
+	NEW  shift 70
+	TRUE  shift 71
+	FALSE  shift 72
+	'('  shift 73
+	'!'  shift 74
+	.  error
+
+	Expression  goto 78
+
+
+state 62
+	Statement : SYSTEM_OUT_PRINTLN '(' . Expression ')' ';'  (27)
+
+	IDENTIFIER  shift 67
+	INT  shift 68
+	THIS  shift 69
+	NEW  shift 70
+	TRUE  shift 71
+	FALSE  shift 72
+	'('  shift 73
+	'!'  shift 74
+	.  error
+
+	Expression  goto 79
+
+
+state 63
+	Statement : '{' Statement . '}'  (24)
+
+	'}'  shift 80
+	.  error
+
+
+state 64
+	MainClass : CLASS IDENTIFIER '{' PUBLIC STATIC VOID MAIN '(' STRING '[' ']' IDENTIFIER ')' '{' Statement '}' . '}'  (4)
+
+	'}'  shift 81
+	.  error
+
+
+state 65
+	ParamListRecurr : ',' Type . IDENTIFIER ParamListRecurr  (17)
+
+	IDENTIFIER  shift 82
+	.  error
+
+
+state 66
+	MethodDeclaration : PUBLIC Type IDENTIFIER '(' ParamList ')' '{' VarDeclaration . Statement RETURN Expression ';' '}'  (14)
+	Statement : .  (30)
+
+	IDENTIFIER  shift 49
+	IF  shift 50
+	WHILE  shift 51
+	SYSTEM_OUT_PRINTLN  shift 52
+	'{'  shift 53
+	RETURN  reduce 30
+
+	Statement  goto 83
+
+
+state 67
+	Expression : IDENTIFIER .  (40)
+
+	.  reduce 40
+
+
+state 68
+	Expression : INT .  (37)
+
+	.  reduce 37
+
+
+state 69
+	Expression : THIS .  (41)
+
+	.  reduce 41
+
+
+state 70
+	Expression : NEW . INT '[' Expression ']'  (42)
+	Expression : NEW . IDENTIFIER '(' ')'  (43)
+
+	IDENTIFIER  shift 84
+	INT  shift 85
+	.  error
+
+
+state 71
+	Expression : TRUE .  (38)
+
+	.  reduce 38
+
+
+state 72
+	Expression : FALSE .  (39)
+
+	.  reduce 39
+
+
+state 73
+	Expression : '(' . Expression ')'  (45)
+
+	IDENTIFIER  shift 67
+	INT  shift 68
+	THIS  shift 69
+	NEW  shift 70
+	TRUE  shift 71
+	FALSE  shift 72
+	'('  shift 73
+	'!'  shift 74
+	.  error
+
+	Expression  goto 86
+
+
+state 74
+	Expression : '!' . Expression  (44)
+
+	IDENTIFIER  shift 67
+	INT  shift 68
+	THIS  shift 69
+	NEW  shift 70
+	TRUE  shift 71
+	FALSE  shift 72
+	'('  shift 73
+	'!'  shift 74
+	.  error
+
+	Expression  goto 87
+
+
+state 75
+	Statement : IDENTIFIER '[' Expression . ']' '=' Expression ';'  (29)
+	Expression : Expression . "&&" Expression  (31)
+	Expression : Expression . '<' Expression  (32)
+	Expression : Expression . '+' Expression  (33)
+	Expression : Expression . '-' Expression  (34)
+	Expression : Expression . '*' Expression  (35)
+	Expression : Expression . '/' Expression  (36)
+	Expression : Expression . '[' Expression ']'  (46)
+	Expression : Expression . '.' "length"  (47)
+	Expression : Expression . '.' IDENTIFIER '(' ArgList ')'  (48)
+
+	'+'  shift 88
+	'-'  shift 89
+	'*'  shift 90
+	'/'  shift 91
+	"&&"  shift 92
+	'<'  shift 93
+	'['  shift 94
+	']'  shift 95
+	'.'  shift 96
+	.  error
+
+
+state 76
+	Statement : IDENTIFIER '=' Expression . ';'  (28)
+	Expression : Expression . "&&" Expression  (31)
+	Expression : Expression . '<' Expression  (32)
+	Expression : Expression . '+' Expression  (33)
+	Expression : Expression . '-' Expression  (34)
+	Expression : Expression . '*' Expression  (35)
+	Expression : Expression . '/' Expression  (36)
+	Expression : Expression . '[' Expression ']'  (46)
+	Expression : Expression . '.' "length"  (47)
+	Expression : Expression . '.' IDENTIFIER '(' ArgList ')'  (48)
+
+	'+'  shift 88
+	'-'  shift 89
+	'*'  shift 90
+	'/'  shift 91
+	"&&"  shift 92
+	'<'  shift 93
+	'['  shift 94
+	';'  shift 97
+	'.'  shift 96
+	.  error
+
+
+state 77
+	Statement : IF '(' Expression . ')' Statement ELSE Statement  (25)
+	Expression : Expression . "&&" Expression  (31)
+	Expression : Expression . '<' Expression  (32)
+	Expression : Expression . '+' Expression  (33)
+	Expression : Expression . '-' Expression  (34)
+	Expression : Expression . '*' Expression  (35)
+	Expression : Expression . '/' Expression  (36)
+	Expression : Expression . '[' Expression ']'  (46)
+	Expression : Expression . '.' "length"  (47)
+	Expression : Expression . '.' IDENTIFIER '(' ArgList ')'  (48)
+
+	'+'  shift 88
+	'-'  shift 89
+	'*'  shift 90
+	'/'  shift 91
+	"&&"  shift 92
+	'<'  shift 93
+	'['  shift 94
+	')'  shift 98
+	'.'  shift 96
+	.  error
+
+
+state 78
+	Statement : WHILE '(' Expression . ')' Statement  (26)
+	Expression : Expression . "&&" Expression  (31)
+	Expression : Expression . '<' Expression  (32)
+	Expression : Expression . '+' Expression  (33)
+	Expression : Expression . '-' Expression  (34)
+	Expression : Expression . '*' Expression  (35)
+	Expression : Expression . '/' Expression  (36)
+	Expression : Expression . '[' Expression ']'  (46)
+	Expression : Expression . '.' "length"  (47)
+	Expression : Expression . '.' IDENTIFIER '(' ArgList ')'  (48)
+
+	'+'  shift 88
+	'-'  shift 89
+	'*'  shift 90
+	'/'  shift 91
+	"&&"  shift 92
+	'<'  shift 93
+	'['  shift 94
+	')'  shift 99
+	'.'  shift 96
+	.  error
+
+
+state 79
+	Statement : SYSTEM_OUT_PRINTLN '(' Expression . ')' ';'  (27)
+	Expression : Expression . "&&" Expression  (31)
+	Expression : Expression . '<' Expression  (32)
+	Expression : Expression . '+' Expression  (33)
+	Expression : Expression . '-' Expression  (34)
+	Expression : Expression . '*' Expression  (35)
+	Expression : Expression . '/' Expression  (36)
+	Expression : Expression . '[' Expression ']'  (46)
+	Expression : Expression . '.' "length"  (47)
+	Expression : Expression . '.' IDENTIFIER '(' ArgList ')'  (48)
+
+	'+'  shift 88
+	'-'  shift 89
+	'*'  shift 90
+	'/'  shift 91
+	"&&"  shift 92
+	'<'  shift 93
+	'['  shift 94
+	')'  shift 100
+	'.'  shift 96
+	.  error
+
+
+state 80
+	Statement : '{' Statement '}' .  (24)
+
+	.  reduce 24
+
+
+state 81
+	MainClass : CLASS IDENTIFIER '{' PUBLIC STATIC VOID MAIN '(' STRING '[' ']' IDENTIFIER ')' '{' Statement '}' '}' .  (4)
+
+	.  reduce 4
+
+
+state 82
+	ParamListRecurr : ',' Type IDENTIFIER . ParamListRecurr  (17)
+	ParamListRecurr : .  (18)
+
+	','  shift 55
+	')'  reduce 18
+
+	ParamListRecurr  goto 101
+
+
+state 83
+	MethodDeclaration : PUBLIC Type IDENTIFIER '(' ParamList ')' '{' VarDeclaration Statement . RETURN Expression ';' '}'  (14)
+
+	RETURN  shift 102
+	.  error
+
+
+state 84
+	Expression : NEW IDENTIFIER . '(' ')'  (43)
+
+	'('  shift 103
+	.  error
+
+
+state 85
+	Expression : NEW INT . '[' Expression ']'  (42)
+
+	'['  shift 104
+	.  error
+
+
+state 86
+	Expression : Expression . "&&" Expression  (31)
+	Expression : Expression . '<' Expression  (32)
+	Expression : Expression . '+' Expression  (33)
+	Expression : Expression . '-' Expression  (34)
+	Expression : Expression . '*' Expression  (35)
+	Expression : Expression . '/' Expression  (36)
+	Expression : '(' Expression . ')'  (45)
+	Expression : Expression . '[' Expression ']'  (46)
+	Expression : Expression . '.' "length"  (47)
+	Expression : Expression . '.' IDENTIFIER '(' ArgList ')'  (48)
+
+	'+'  shift 88
+	'-'  shift 89
+	'*'  shift 90
+	'/'  shift 91
+	"&&"  shift 92
+	'<'  shift 93
+	'['  shift 94
+	')'  shift 105
+	'.'  shift 96
+	.  error
+
+
+87: shift/reduce conflict (shift 88, reduce 44) on '+'
+87: shift/reduce conflict (shift 89, reduce 44) on '-'
+87: shift/reduce conflict (shift 90, reduce 44) on '*'
+87: shift/reduce conflict (shift 91, reduce 44) on '/'
+87: shift/reduce conflict (shift 92, reduce 44) on "&&"
+87: shift/reduce conflict (shift 93, reduce 44) on '<'
+87: shift/reduce conflict (shift 94, reduce 44) on '['
+87: shift/reduce conflict (shift 96, reduce 44) on '.'
+state 87
+	Expression : Expression . "&&" Expression  (31)
+	Expression : Expression . '<' Expression  (32)
+	Expression : Expression . '+' Expression  (33)
+	Expression : Expression . '-' Expression  (34)
+	Expression : Expression . '*' Expression  (35)
+	Expression : Expression . '/' Expression  (36)
+	Expression : '!' Expression .  (44)
+	Expression : Expression . '[' Expression ']'  (46)
+	Expression : Expression . '.' "length"  (47)
+	Expression : Expression . '.' IDENTIFIER '(' ArgList ')'  (48)
+
+	'+'  shift 88
+	'-'  shift 89
+	'*'  shift 90
+	'/'  shift 91
+	"&&"  shift 92
+	'<'  shift 93
+	'['  shift 94
+	'.'  shift 96
+	']'  reduce 44
+	')'  reduce 44
+	';'  reduce 44
+	','  reduce 44
+
+
+state 88
+	Expression : Expression '+' . Expression  (33)
+
+	IDENTIFIER  shift 67
+	INT  shift 68
+	THIS  shift 69
+	NEW  shift 70
+	TRUE  shift 71
+	FALSE  shift 72
+	'('  shift 73
+	'!'  shift 74
+	.  error
+
+	Expression  goto 106
+
+
+state 89
+	Expression : Expression '-' . Expression  (34)
+
+	IDENTIFIER  shift 67
+	INT  shift 68
+	THIS  shift 69
+	NEW  shift 70
+	TRUE  shift 71
+	FALSE  shift 72
+	'('  shift 73
+	'!'  shift 74
+	.  error
+
+	Expression  goto 107
+
+
+state 90
+	Expression : Expression '*' . Expression  (35)
+
+	IDENTIFIER  shift 67
+	INT  shift 68
+	THIS  shift 69
+	NEW  shift 70
+	TRUE  shift 71
+	FALSE  shift 72
+	'('  shift 73
+	'!'  shift 74
+	.  error
+
+	Expression  goto 108
+
+
+state 91
+	Expression : Expression '/' . Expression  (36)
+
+	IDENTIFIER  shift 67
+	INT  shift 68
+	THIS  shift 69
+	NEW  shift 70
+	TRUE  shift 71
+	FALSE  shift 72
+	'('  shift 73
+	'!'  shift 74
+	.  error
+
+	Expression  goto 109
+
+
+state 92
+	Expression : Expression "&&" . Expression  (31)
+
+	IDENTIFIER  shift 67
+	INT  shift 68
+	THIS  shift 69
+	NEW  shift 70
+	TRUE  shift 71
+	FALSE  shift 72
+	'('  shift 73
+	'!'  shift 74
+	.  error
+
+	Expression  goto 110
+
+
+state 93
+	Expression : Expression '<' . Expression  (32)
+
+	IDENTIFIER  shift 67
+	INT  shift 68
+	THIS  shift 69
+	NEW  shift 70
+	TRUE  shift 71
+	FALSE  shift 72
+	'('  shift 73
+	'!'  shift 74
+	.  error
+
+	Expression  goto 111
+
+
+state 94
+	Expression : Expression '[' . Expression ']'  (46)
+
+	IDENTIFIER  shift 67
+	INT  shift 68
+	THIS  shift 69
+	NEW  shift 70
+	TRUE  shift 71
+	FALSE  shift 72
+	'('  shift 73
+	'!'  shift 74
+	.  error
+
+	Expression  goto 112
+
+
+state 95
+	Statement : IDENTIFIER '[' Expression ']' . '=' Expression ';'  (29)
+
+	'='  shift 113
+	.  error
+
+
+state 96
+	Expression : Expression '.' . "length"  (47)
+	Expression : Expression '.' . IDENTIFIER '(' ArgList ')'  (48)
+
+	IDENTIFIER  shift 114
+	"length"  shift 115
+	.  error
+
+
+state 97
+	Statement : IDENTIFIER '=' Expression ';' .  (28)
+
+	.  reduce 28
+
+
+state 98
+	Statement : IF '(' Expression ')' . Statement ELSE Statement  (25)
+	Statement : .  (30)
+
+	IDENTIFIER  shift 49
+	IF  shift 50
+	WHILE  shift 51
+	SYSTEM_OUT_PRINTLN  shift 52
+	'{'  shift 53
+	ELSE  reduce 30
+
+	Statement  goto 116
+
+
+state 99
+	Statement : WHILE '(' Expression ')' . Statement  (26)
+	Statement : .  (30)
+
+	IDENTIFIER  shift 49
+	IF  shift 50
+	WHILE  shift 51
+	SYSTEM_OUT_PRINTLN  shift 52
+	'{'  shift 53
+	RETURN  reduce 30
+	ELSE  reduce 30
+	'}'  reduce 30
+
+	Statement  goto 117
+
+
+state 100
+	Statement : SYSTEM_OUT_PRINTLN '(' Expression ')' . ';'  (27)
+
+	';'  shift 118
+	.  error
+
+
+state 101
+	ParamListRecurr : ',' Type IDENTIFIER ParamListRecurr .  (17)
+
+	.  reduce 17
+
+
+state 102
+	MethodDeclaration : PUBLIC Type IDENTIFIER '(' ParamList ')' '{' VarDeclaration Statement RETURN . Expression ';' '}'  (14)
+
+	IDENTIFIER  shift 67
+	INT  shift 68
+	THIS  shift 69
+	NEW  shift 70
+	TRUE  shift 71
+	FALSE  shift 72
+	'('  shift 73
+	'!'  shift 74
+	.  error
+
+	Expression  goto 119
+
+
+state 103
+	Expression : NEW IDENTIFIER '(' . ')'  (43)
+
+	')'  shift 120
+	.  error
+
+
+state 104
+	Expression : NEW INT '[' . Expression ']'  (42)
+
+	IDENTIFIER  shift 67
+	INT  shift 68
+	THIS  shift 69
+	NEW  shift 70
+	TRUE  shift 71
+	FALSE  shift 72
+	'('  shift 73
+	'!'  shift 74
+	.  error
+
+	Expression  goto 121
+
+
+state 105
+	Expression : '(' Expression ')' .  (45)
+
+	.  reduce 45
+
+
+106: shift/reduce conflict (shift 94, reduce 33) on '['
+106: shift/reduce conflict (shift 96, reduce 33) on '.'
+state 106
+	Expression : Expression . "&&" Expression  (31)
+	Expression : Expression . '<' Expression  (32)
+	Expression : Expression . '+' Expression  (33)
+	Expression : Expression '+' Expression .  (33)
+	Expression : Expression . '-' Expression  (34)
+	Expression : Expression . '*' Expression  (35)
+	Expression : Expression . '/' Expression  (36)
+	Expression : Expression . '[' Expression ']'  (46)
+	Expression : Expression . '.' "length"  (47)
+	Expression : Expression . '.' IDENTIFIER '(' ArgList ')'  (48)
+
+	'*'  shift 90
+	'/'  shift 91
+	"&&"  shift 92
+	'<'  shift 93
+	'['  shift 94
+	'.'  shift 96
+	'+'  reduce 33
+	'-'  reduce 33
+	']'  reduce 33
+	')'  reduce 33
+	';'  reduce 33
+	','  reduce 33
+
+
+107: shift/reduce conflict (shift 94, reduce 34) on '['
+107: shift/reduce conflict (shift 96, reduce 34) on '.'
+state 107
+	Expression : Expression . "&&" Expression  (31)
+	Expression : Expression . '<' Expression  (32)
+	Expression : Expression . '+' Expression  (33)
+	Expression : Expression . '-' Expression  (34)
+	Expression : Expression '-' Expression .  (34)
+	Expression : Expression . '*' Expression  (35)
+	Expression : Expression . '/' Expression  (36)
+	Expression : Expression . '[' Expression ']'  (46)
+	Expression : Expression . '.' "length"  (47)
+	Expression : Expression . '.' IDENTIFIER '(' ArgList ')'  (48)
+
+	'*'  shift 90
+	'/'  shift 91
+	"&&"  shift 92
+	'<'  shift 93
+	'['  shift 94
+	'.'  shift 96
+	'+'  reduce 34
+	'-'  reduce 34
+	']'  reduce 34
+	')'  reduce 34
+	';'  reduce 34
+	','  reduce 34
+
+
+108: shift/reduce conflict (shift 94, reduce 35) on '['
+108: shift/reduce conflict (shift 96, reduce 35) on '.'
+state 108
+	Expression : Expression . "&&" Expression  (31)
+	Expression : Expression . '<' Expression  (32)
+	Expression : Expression . '+' Expression  (33)
+	Expression : Expression . '-' Expression  (34)
+	Expression : Expression . '*' Expression  (35)
+	Expression : Expression '*' Expression .  (35)
+	Expression : Expression . '/' Expression  (36)
+	Expression : Expression . '[' Expression ']'  (46)
+	Expression : Expression . '.' "length"  (47)
+	Expression : Expression . '.' IDENTIFIER '(' ArgList ')'  (48)
+
+	"&&"  shift 92
+	'<'  shift 93
+	'['  shift 94
+	'.'  shift 96
+	'+'  reduce 35
+	'-'  reduce 35
+	'*'  reduce 35
+	'/'  reduce 35
+	']'  reduce 35
+	')'  reduce 35
+	';'  reduce 35
+	','  reduce 35
+
+
+109: shift/reduce conflict (shift 94, reduce 36) on '['
+109: shift/reduce conflict (shift 96, reduce 36) on '.'
+state 109
+	Expression : Expression . "&&" Expression  (31)
+	Expression : Expression . '<' Expression  (32)
+	Expression : Expression . '+' Expression  (33)
+	Expression : Expression . '-' Expression  (34)
+	Expression : Expression . '*' Expression  (35)
+	Expression : Expression . '/' Expression  (36)
+	Expression : Expression '/' Expression .  (36)
+	Expression : Expression . '[' Expression ']'  (46)
+	Expression : Expression . '.' "length"  (47)
+	Expression : Expression . '.' IDENTIFIER '(' ArgList ')'  (48)
+
+	"&&"  shift 92
+	'<'  shift 93
+	'['  shift 94
+	'.'  shift 96
+	'+'  reduce 36
+	'-'  reduce 36
+	'*'  reduce 36
+	'/'  reduce 36
+	']'  reduce 36
+	')'  reduce 36
+	';'  reduce 36
+	','  reduce 36
+
+
+110: shift/reduce conflict (shift 94, reduce 31) on '['
+110: shift/reduce conflict (shift 96, reduce 31) on '.'
+state 110
+	Expression : Expression . "&&" Expression  (31)
+	Expression : Expression "&&" Expression .  (31)
+	Expression : Expression . '<' Expression  (32)
+	Expression : Expression . '+' Expression  (33)
+	Expression : Expression . '-' Expression  (34)
+	Expression : Expression . '*' Expression  (35)
+	Expression : Expression . '/' Expression  (36)
+	Expression : Expression . '[' Expression ']'  (46)
+	Expression : Expression . '.' "length"  (47)
+	Expression : Expression . '.' IDENTIFIER '(' ArgList ')'  (48)
+
+	'['  shift 94
+	'.'  shift 96
+	'+'  reduce 31
+	'-'  reduce 31
+	'*'  reduce 31
+	'/'  reduce 31
+	"&&"  reduce 31
+	'<'  reduce 31
+	']'  reduce 31
+	')'  reduce 31
+	';'  reduce 31
+	','  reduce 31
+
+
+111: shift/reduce conflict (shift 94, reduce 32) on '['
+111: shift/reduce conflict (shift 96, reduce 32) on '.'
+state 111
+	Expression : Expression . "&&" Expression  (31)
+	Expression : Expression . '<' Expression  (32)
+	Expression : Expression '<' Expression .  (32)
+	Expression : Expression . '+' Expression  (33)
+	Expression : Expression . '-' Expression  (34)
+	Expression : Expression . '*' Expression  (35)
+	Expression : Expression . '/' Expression  (36)
+	Expression : Expression . '[' Expression ']'  (46)
+	Expression : Expression . '.' "length"  (47)
+	Expression : Expression . '.' IDENTIFIER '(' ArgList ')'  (48)
+
+	'['  shift 94
+	'.'  shift 96
+	'+'  reduce 32
+	'-'  reduce 32
+	'*'  reduce 32
+	'/'  reduce 32
+	"&&"  reduce 32
+	'<'  reduce 32
+	']'  reduce 32
+	')'  reduce 32
+	';'  reduce 32
+	','  reduce 32
+
+
+state 112
+	Expression : Expression . "&&" Expression  (31)
+	Expression : Expression . '<' Expression  (32)
+	Expression : Expression . '+' Expression  (33)
+	Expression : Expression . '-' Expression  (34)
+	Expression : Expression . '*' Expression  (35)
+	Expression : Expression . '/' Expression  (36)
+	Expression : Expression . '[' Expression ']'  (46)
+	Expression : Expression '[' Expression . ']'  (46)
+	Expression : Expression . '.' "length"  (47)
+	Expression : Expression . '.' IDENTIFIER '(' ArgList ')'  (48)
+
+	'+'  shift 88
+	'-'  shift 89
+	'*'  shift 90
+	'/'  shift 91
+	"&&"  shift 92
+	'<'  shift 93
+	'['  shift 94
+	']'  shift 122
+	'.'  shift 96
+	.  error
+
+
+state 113
+	Statement : IDENTIFIER '[' Expression ']' '=' . Expression ';'  (29)
+
+	IDENTIFIER  shift 67
+	INT  shift 68
+	THIS  shift 69
+	NEW  shift 70
+	TRUE  shift 71
+	FALSE  shift 72
+	'('  shift 73
+	'!'  shift 74
+	.  error
+
+	Expression  goto 123
+
+
+state 114
+	Expression : Expression '.' IDENTIFIER . '(' ArgList ')'  (48)
+
+	'('  shift 124
+	.  error
+
+
+state 115
+	Expression : Expression '.' "length" .  (47)
+
+	.  reduce 47
+
+
+state 116
+	Statement : IF '(' Expression ')' Statement . ELSE Statement  (25)
+
+	ELSE  shift 125
+	.  error
+
+
+state 117
+	Statement : WHILE '(' Expression ')' Statement .  (26)
+
+	.  reduce 26
+
+
+state 118
+	Statement : SYSTEM_OUT_PRINTLN '(' Expression ')' ';' .  (27)
+
+	.  reduce 27
+
+
+state 119
+	MethodDeclaration : PUBLIC Type IDENTIFIER '(' ParamList ')' '{' VarDeclaration Statement RETURN Expression . ';' '}'  (14)
+	Expression : Expression . "&&" Expression  (31)
+	Expression : Expression . '<' Expression  (32)
+	Expression : Expression . '+' Expression  (33)
+	Expression : Expression . '-' Expression  (34)
+	Expression : Expression . '*' Expression  (35)
+	Expression : Expression . '/' Expression  (36)
+	Expression : Expression . '[' Expression ']'  (46)
+	Expression : Expression . '.' "length"  (47)
+	Expression : Expression . '.' IDENTIFIER '(' ArgList ')'  (48)
+
+	'+'  shift 88
+	'-'  shift 89
+	'*'  shift 90
+	'/'  shift 91
+	"&&"  shift 92
+	'<'  shift 93
+	'['  shift 94
+	';'  shift 126
+	'.'  shift 96
+	.  error
+
+
+state 120
+	Expression : NEW IDENTIFIER '(' ')' .  (43)
+
+	.  reduce 43
+
+
+state 121
+	Expression : Expression . "&&" Expression  (31)
+	Expression : Expression . '<' Expression  (32)
+	Expression : Expression . '+' Expression  (33)
+	Expression : Expression . '-' Expression  (34)
+	Expression : Expression . '*' Expression  (35)
+	Expression : Expression . '/' Expression  (36)
+	Expression : NEW INT '[' Expression . ']'  (42)
+	Expression : Expression . '[' Expression ']'  (46)
+	Expression : Expression . '.' "length"  (47)
+	Expression : Expression . '.' IDENTIFIER '(' ArgList ')'  (48)
+
+	'+'  shift 88
+	'-'  shift 89
+	'*'  shift 90
+	'/'  shift 91
+	"&&"  shift 92
+	'<'  shift 93
+	'['  shift 94
+	']'  shift 127
+	'.'  shift 96
+	.  error
+
+
+state 122
+	Expression : Expression '[' Expression ']' .  (46)
+
+	.  reduce 46
+
+
+state 123
+	Statement : IDENTIFIER '[' Expression ']' '=' Expression . ';'  (29)
+	Expression : Expression . "&&" Expression  (31)
+	Expression : Expression . '<' Expression  (32)
+	Expression : Expression . '+' Expression  (33)
+	Expression : Expression . '-' Expression  (34)
+	Expression : Expression . '*' Expression  (35)
+	Expression : Expression . '/' Expression  (36)
+	Expression : Expression . '[' Expression ']'  (46)
+	Expression : Expression . '.' "length"  (47)
+	Expression : Expression . '.' IDENTIFIER '(' ArgList ')'  (48)
+
+	'+'  shift 88
+	'-'  shift 89
+	'*'  shift 90
+	'/'  shift 91
+	"&&"  shift 92
+	'<'  shift 93
+	'['  shift 94
+	';'  shift 128
+	'.'  shift 96
+	.  error
+
+
+state 124
+	Expression : Expression '.' IDENTIFIER '(' . ArgList ')'  (48)
+	ArgList : .  (50)
+
+	IDENTIFIER  shift 67
+	INT  shift 68
+	THIS  shift 69
+	NEW  shift 70
+	TRUE  shift 71
+	FALSE  shift 72
+	'('  shift 73
+	'!'  shift 74
+	')'  reduce 50
+
+	Expression  goto 129
+	ArgList  goto 130
+
+
+state 125
+	Statement : IF '(' Expression ')' Statement ELSE . Statement  (25)
+	Statement : .  (30)
+
+	IDENTIFIER  shift 49
+	IF  shift 50
+	WHILE  shift 51
+	SYSTEM_OUT_PRINTLN  shift 52
+	'{'  shift 53
+	RETURN  reduce 30
+	ELSE  reduce 30
+	'}'  reduce 30
+
+	Statement  goto 131
+
+
+state 126
+	MethodDeclaration : PUBLIC Type IDENTIFIER '(' ParamList ')' '{' VarDeclaration Statement RETURN Expression ';' . '}'  (14)
+
+	'}'  shift 132
+	.  error
+
+
+state 127
+	Expression : NEW INT '[' Expression ']' .  (42)
+
+	.  reduce 42
+
+
+state 128
+	Statement : IDENTIFIER '[' Expression ']' '=' Expression ';' .  (29)
+
+	.  reduce 29
+
+
+state 129
+	Expression : Expression . "&&" Expression  (31)
+	Expression : Expression . '<' Expression  (32)
+	Expression : Expression . '+' Expression  (33)
+	Expression : Expression . '-' Expression  (34)
+	Expression : Expression . '*' Expression  (35)
+	Expression : Expression . '/' Expression  (36)
+	Expression : Expression . '[' Expression ']'  (46)
+	Expression : Expression . '.' "length"  (47)
+	Expression : Expression . '.' IDENTIFIER '(' ArgList ')'  (48)
+	ArgList : Expression . ArgListRecurr  (49)
+	ArgListRecurr : .  (52)
+
+	'+'  shift 88
+	'-'  shift 89
+	'*'  shift 90
+	'/'  shift 91
+	"&&"  shift 92
+	'<'  shift 93
+	'['  shift 94
+	','  shift 133
+	'.'  shift 96
+	')'  reduce 52
+
+	ArgListRecurr  goto 134
+
+
+state 130
+	Expression : Expression '.' IDENTIFIER '(' ArgList . ')'  (48)
+
+	')'  shift 135
+	.  error
+
+
+state 131
+	Statement : IF '(' Expression ')' Statement ELSE Statement .  (25)
+
+	.  reduce 25
+
+
+state 132
+	MethodDeclaration : PUBLIC Type IDENTIFIER '(' ParamList ')' '{' VarDeclaration Statement RETURN Expression ';' '}' .  (14)
+
+	.  reduce 14
+
+
+state 133
+	ArgListRecurr : ',' . Expression ArgListRecurr  (51)
+
+	IDENTIFIER  shift 67
+	INT  shift 68
+	THIS  shift 69
+	NEW  shift 70
+	TRUE  shift 71
+	FALSE  shift 72
+	'('  shift 73
+	'!'  shift 74
+	.  error
+
+	Expression  goto 136
+
+
+state 134
+	ArgList : Expression ArgListRecurr .  (49)
+
+	.  reduce 49
+
+
+state 135
+	Expression : Expression '.' IDENTIFIER '(' ArgList ')' .  (48)
+
+	.  reduce 48
+
+
+state 136
+	Expression : Expression . "&&" Expression  (31)
+	Expression : Expression . '<' Expression  (32)
+	Expression : Expression . '+' Expression  (33)
+	Expression : Expression . '-' Expression  (34)
+	Expression : Expression . '*' Expression  (35)
+	Expression : Expression . '/' Expression  (36)
+	Expression : Expression . '[' Expression ']'  (46)
+	Expression : Expression . '.' "length"  (47)
+	Expression : Expression . '.' IDENTIFIER '(' ArgList ')'  (48)
+	ArgListRecurr : ',' Expression . ArgListRecurr  (51)
+	ArgListRecurr : .  (52)
+
+	'+'  shift 88
+	'-'  shift 89
+	'*'  shift 90
+	'/'  shift 91
+	"&&"  shift 92
+	'<'  shift 93
+	'['  shift 94
+	','  shift 133
+	'.'  shift 96
+	')'  reduce 52
+
+	ArgListRecurr  goto 137
+
+
+state 137
+	ArgListRecurr : ',' Expression ArgListRecurr .  (51)
+
+	.  reduce 51
+
+
+State 18 contains 3 shift/reduce conflicts, 2 reduce/reduce conflicts.
+State 57 contains 1 shift/reduce conflict.
+State 87 contains 8 shift/reduce conflicts.
+State 106 contains 2 shift/reduce conflicts.
+State 107 contains 2 shift/reduce conflicts.
+State 108 contains 2 shift/reduce conflicts.
+State 109 contains 2 shift/reduce conflicts.
+State 110 contains 2 shift/reduce conflicts.
+State 111 contains 2 shift/reduce conflicts.
+
+
+40 terminals, 18 nonterminals
+53 grammar rules, 138 states
